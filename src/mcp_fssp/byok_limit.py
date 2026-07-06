@@ -1,4 +1,4 @@
-"""Дневной лимит BYOK Damia без Atomno API-ключа (open-core moat v0.1.1)."""
+"""Дневной fair-use лимит BYOK Damia без корпоративного Atomno API-ключа."""
 
 from __future__ import annotations
 
