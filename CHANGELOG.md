@@ -9,16 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- **Open-core moat**: провайдер по умолчанию — `atomno_pro` (hosted `api.atomno-mcp.ru`).
+- Провайдер по умолчанию — корпоративный endpoint Atomno (`atomno_pro`, `api.atomno-mcp.ru`).
   Требуется `MCP_FSSP_ATOMNO_API_KEY` (алиас: `ATOMNO_API_KEY`).
-- Реализован thin-client `AtomnoProProvider` — пока hosted API в разработке,
-  возвращает понятную ошибку «coming soon, hello@atomno.ru».
-- BYOK Damia (`MCP_FSSP_PROVIDER=damia`) — **deprecated**; дневной лимит
-  **10 запросов** без Atomno-ключа (`MCP_FSSP_BYOK_DAILY_LIMIT`).
+- Thin-client `AtomnoProProvider`: при недоступности backend — понятное сообщение
+  вместо тихого падения (бета, `hello@atomno.ru`).
+- Fair-use: дневной лимит **10 запросов** в демо-режиме без корпоративного ключа
+  (`MCP_FSSP_BYOK_DAILY_LIMIT`). Собственный ключ Damia — `MCP_FSSP_PROVIDER=damia`.
 
 ### Changed
 
-- README: hosted-first, Damia BYOK как временный fallback.
+- Документация: production — корпоративный API; Damia BYOK — для разработки и пилотов.
 
 ## [0.1.0] - 2026-07-06
 
