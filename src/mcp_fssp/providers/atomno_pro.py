@@ -20,7 +20,8 @@ from ..schemas import CheckDebtsResponse, ProceedingDetails
 _COMING_SOON = (
     "Hosted API ФССП ещё в разработке. "
     "Напишите hello@atomno.ru для раннего доступа. "
-    "Временно: MCP_FSSP_PROVIDER=damia + MCP_FSSP_DAMIA_KEY (deprecated, лимит 10 req/день)."
+    "Для пилотов: MCP_FSSP_PROVIDER=damia + MCP_FSSP_DAMIA_KEY "
+    "(fair-use: до 10 запросов/сутки без корпоративного ключа)."
 )
 
 
