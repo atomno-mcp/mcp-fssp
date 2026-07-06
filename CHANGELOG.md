@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - 2026-07-06
+
+### Changed
+
+- Брендинг PyPI и публичной документации: `atomno-labs` → `Atomno` / `atomno-mcp`
+  (copyright, контактные URL).
+
 ## [0.1.1] - 2026-07-06
 
 ### Fixed
@@ -37,5 +44,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Official FSSP API disabled since 2022; direct `fssp.gov.ru` parsing deferred to Phase 2.
 - Requires commercial provider API key for live queries.
 
+[0.1.2]: https://github.com/atomno-mcp/mcp-fssp/releases/tag/v0.1.2
 [0.1.1]: https://github.com/atomno-mcp/mcp-fssp/releases/tag/v0.1.1
 [0.1.0]: https://github.com/atomno-mcp/mcp-fssp/releases/tag/v0.1.0
