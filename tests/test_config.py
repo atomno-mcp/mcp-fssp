@@ -15,10 +15,9 @@ def test_defaults_when_only_provider_set(
     clean_env: None,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    monkeypatch.setenv("MCP_FSSP_PROVIDER", "damia")
     monkeypatch.setenv("MCP_FSSP_AUDIT_DB", str(tmp_path / "audit.sqlite"))
     config = Config.from_env()
-    assert config.provider == "damia"
+    assert config.provider == "atomno_pro"
     assert config.damia_key is None
     assert config.http_timeout_seconds == 15.0
     assert config.rps == 30
@@ -77,7 +76,7 @@ def test_hosted_mode_only_when_provider_atomno_pro(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     monkeypatch.setenv("MCP_FSSP_PROVIDER", "damia")
-    monkeypatch.setenv("ATOMNO_API_KEY", "pro-key")
+    monkeypatch.setenv("MCP_FSSP_ATOMNO_API_KEY", "pro-key")
     monkeypatch.setenv("MCP_FSSP_DAMIA_KEY", "damia-key")
     monkeypatch.setenv("MCP_FSSP_AUDIT_DB", str(tmp_path / "audit.sqlite"))
     config = Config.from_env()

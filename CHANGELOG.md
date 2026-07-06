@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2026-07-06
+
+### Fixed
+
+- **Open-core moat**: провайдер по умолчанию — `atomno_pro` (hosted `api.atomno-mcp.ru`).
+  Требуется `MCP_FSSP_ATOMNO_API_KEY` (алиас: `ATOMNO_API_KEY`).
+- Реализован thin-client `AtomnoProProvider` — пока hosted API в разработке,
+  возвращает понятную ошибку «coming soon, hello@atomno.ru».
+- BYOK Damia (`MCP_FSSP_PROVIDER=damia`) — **deprecated**; дневной лимит
+  **10 запросов** без Atomno-ключа (`MCP_FSSP_BYOK_DAILY_LIMIT`).
+
+### Changed
+
+- README: hosted-first, Damia BYOK как временный fallback.
+
 ## [0.1.0] - 2026-07-06
 
 ### Added
@@ -22,4 +37,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Official FSSP API disabled since 2022; direct `fssp.gov.ru` parsing deferred to Phase 2.
 - Requires commercial provider API key for live queries.
 
+[0.1.1]: https://github.com/atomno-mcp/mcp-fssp/releases/tag/v0.1.1
 [0.1.0]: https://github.com/atomno-mcp/mcp-fssp/releases/tag/v0.1.0

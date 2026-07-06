@@ -8,7 +8,8 @@ from __future__ import annotations
 import time
 from typing import TYPE_CHECKING
 
-from ..constants import ERROR_CODE_INTERNAL
+from ..byok_limit import enforce_byok_daily_limit
+from ..constants import ERROR_CODE_INTERNAL, PROVIDER_DAMIA
 from ..errors import McpFsspError
 from ..normalize import hash_person, normalize_fio, parse_birth_date
 from ..schemas import CheckDebtsResponse
@@ -38,6 +39,7 @@ async def check_individual_debts(
 
     started = time.perf_counter()
     try:
+        await enforce_byok_daily_limit(ctx.audit, ctx.config)
         response = await ctx.provider.check_individual(
             fio=normalized_fio,
             birth_date=parsed_dob,
@@ -69,6 +71,10 @@ async def check_individual_debts(
         raise
 
     latency_ms = int((time.perf_counter() - started) * 1000)
+    if ctx.config.provider == PROVIDER_DAMIA:
+        from datetime import date
+
+        await ctx.audit.increment_byok_daily_count(date.today().isoformat())
     await ctx.audit.log(
         tool_name="check_individual_debts",
         query_hash=query_hash,

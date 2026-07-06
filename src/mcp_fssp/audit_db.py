@@ -32,6 +32,11 @@ CREATE TABLE IF NOT EXISTS {TABLE_AUDIT_LOG} (
 );
 CREATE INDEX IF NOT EXISTS idx_audit_ts ON {TABLE_AUDIT_LOG}(ts);
 CREATE INDEX IF NOT EXISTS idx_audit_provider ON {TABLE_AUDIT_LOG}(provider);
+
+CREATE TABLE IF NOT EXISTS byok_daily_usage (
+    usage_date TEXT PRIMARY KEY,
+    count INTEGER NOT NULL DEFAULT 0
+);
 """
 
 
@@ -112,3 +117,26 @@ class AuditDb:
         ) as cur:
             row = await cur.fetchone()
             return int(row[0]) if row else 0
+
+    async def get_byok_daily_count(self, usage_date: str) -> int:
+        if self._conn is None:
+            await self.init()
+        assert self._conn is not None
+        async with self._conn.execute(
+            "SELECT count FROM byok_daily_usage WHERE usage_date = ?",
+            (usage_date,),
+        ) as cur:
+            row = await cur.fetchone()
+            return int(row[0]) if row else 0
+
+    async def increment_byok_daily_count(self, usage_date: str) -> int:
+        if self._conn is None:
+            await self.init()
+        assert self._conn is not None
+        await self._conn.execute(
+            "INSERT INTO byok_daily_usage (usage_date, count) VALUES (?, 1) "
+            "ON CONFLICT(usage_date) DO UPDATE SET count = count + 1",
+            (usage_date,),
+        )
+        await self._conn.commit()
+        return await self.get_byok_daily_count(usage_date)

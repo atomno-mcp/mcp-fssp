@@ -51,8 +51,11 @@ ALL_PROVIDERS: Final[tuple[str, ...]] = (
     PROVIDER_ATOMNO_PRO,
 )
 
-# Провайдеры реализованные в текущей фазе (Phase 1: только Damia).
-IMPLEMENTED_PROVIDERS: Final[tuple[str, ...]] = (PROVIDER_DAMIA,)
+# Провайдеры реализованные в текущей фазе.
+IMPLEMENTED_PROVIDERS: Final[tuple[str, ...]] = (PROVIDER_DAMIA, PROVIDER_ATOMNO_PRO)
+
+DEFAULT_PROVIDER: Final[str] = PROVIDER_ATOMNO_PRO
+DEFAULT_BYOK_DAILY_LIMIT: Final[int] = 10
 
 # ---------------------------------------------------------------------------
 # Типы субъектов.
@@ -143,8 +146,11 @@ ENV_DAMIA_KEY: Final[str] = "MCP_FSSP_DAMIA_KEY"
 ENV_CHECKO_KEY: Final[str] = "MCP_FSSP_CHECKO_KEY"
 ENV_NEWDB_KEY: Final[str] = "MCP_FSSP_NEWDB_KEY"
 ENV_API_CLOUD_KEY: Final[str] = "MCP_FSSP_API_CLOUD_KEY"
-ENV_HOSTED_API_KEY: Final[str] = "ATOMNO_API_KEY"
-ENV_HOSTED_API_BASE: Final[str] = "ATOMNO_API_BASE"
+ENV_HOSTED_API_KEY: Final[str] = "MCP_FSSP_ATOMNO_API_KEY"
+ENV_HOSTED_API_KEY_LEGACY: Final[str] = "ATOMNO_API_KEY"
+ENV_HOSTED_API_BASE: Final[str] = "MCP_FSSP_ATOMNO_API_BASE"
+ENV_HOSTED_API_BASE_LEGACY: Final[str] = "ATOMNO_API_BASE"
+ENV_BYOK_DAILY_LIMIT: Final[str] = "MCP_FSSP_BYOK_DAILY_LIMIT"
 ENV_HTTP_TIMEOUT: Final[str] = "MCP_FSSP_HTTP_TIMEOUT"
 ENV_RPS: Final[str] = "MCP_FSSP_RPS"
 ENV_USER_AGENT: Final[str] = "MCP_FSSP_USER_AGENT"

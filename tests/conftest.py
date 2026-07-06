@@ -26,7 +26,12 @@ def damia_test_key() -> str:
 def clean_env(monkeypatch: pytest.MonkeyPatch) -> Iterator[None]:
     """Удалить все MCP_FSSP_* и ATOMNO_* переменные из env на время теста."""
     for key in list(os.environ.keys()):
-        if key.startswith("MCP_FSSP_") or key in ("ATOMNO_API_KEY", "ATOMNO_API_BASE"):
+        if key.startswith("MCP_FSSP_") or key in (
+            "ATOMNO_API_KEY",
+            "ATOMNO_API_BASE",
+            "MCP_FSSP_ATOMNO_API_KEY",
+            "MCP_FSSP_ATOMNO_API_BASE",
+        ):
             monkeypatch.delenv(key, raising=False)
     yield
 

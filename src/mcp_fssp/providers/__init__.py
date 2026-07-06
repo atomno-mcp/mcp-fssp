@@ -1,7 +1,5 @@
 """Реализации провайдеров (Damia / Checko / NewDB / api-cloud / self-parser /
 atomno-pro). См. SPEC §5 и §7.2.
-
-В Phase 1 реализован только Damia. Остальные провайдеры — Phase 2.
 """
 
 from __future__ import annotations
@@ -17,34 +15,32 @@ from ..constants import (
 )
 from ..errors import NotImplementedInPhase
 from ..client_base import AbstractProviderClient
+from .atomno_pro import AtomnoProProvider
 from .damia import DamiaProvider
 
 
 def make_provider(config: Config) -> AbstractProviderClient:
-    """Фабрика провайдера по `config.provider`.
-
-    В Phase 1 поддерживается только `damia`. Для остальных — кидаем
-    `NotImplementedInPhase` с понятным сообщением, чтобы агент видел,
-    почему конфиг работает не так как ожидается.
-    """
+    """Фабрика провайдера по `config.provider`."""
     if config.provider == PROVIDER_DAMIA:
         return DamiaProvider(config)
+
+    if config.provider == PROVIDER_ATOMNO_PRO:
+        return AtomnoProProvider(config)
 
     if config.provider in (
         PROVIDER_CHECKO,
         PROVIDER_NEWDB,
         PROVIDER_API_CLOUD,
         PROVIDER_SELF_PARSER,
-        PROVIDER_ATOMNO_PRO,
     ):
         raise NotImplementedInPhase(
             f"Провайдер '{config.provider}' будет реализован в Phase 2 "
             f"(см. SPEC §10 roadmap).",
             hint=(
-                "В Phase 1 поддерживается только провайдер 'damia'. "
-                "Установите MCP_FSSP_PROVIDER=damia и MCP_FSSP_DAMIA_KEY."
+                "В v0.1.1 рекомендуется MCP_FSSP_PROVIDER=atomno_pro + "
+                "MCP_FSSP_ATOMNO_API_KEY. BYOK Damia: MCP_FSSP_PROVIDER=damia."
             ),
-            details={"provider": config.provider, "phase": 1},
+            details={"provider": config.provider, "phase": 2},
         )
 
     raise NotImplementedInPhase(
@@ -53,4 +49,4 @@ def make_provider(config: Config) -> AbstractProviderClient:
     )
 
 
-__all__ = ["DamiaProvider", "make_provider"]
+__all__ = ["AtomnoProProvider", "DamiaProvider", "make_provider"]

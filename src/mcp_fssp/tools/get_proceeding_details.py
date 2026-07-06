@@ -10,7 +10,8 @@ import re
 import time
 from typing import TYPE_CHECKING
 
-from ..constants import ERROR_CODE_INTERNAL, PROCEEDING_ID_PATTERN
+from ..byok_limit import enforce_byok_daily_limit
+from ..constants import ERROR_CODE_INTERNAL, PROCEEDING_ID_PATTERN, PROVIDER_DAMIA
 from ..errors import McpFsspError, ValidationError
 from ..schemas import ProceedingDetails
 
@@ -45,6 +46,7 @@ async def get_proceeding_details(
 
     started = time.perf_counter()
     try:
+        await enforce_byok_daily_limit(ctx.audit, ctx.config)
         response = await ctx.provider.get_proceeding(cleaned)
     except McpFsspError as exc:
         latency_ms = int((time.perf_counter() - started) * 1000)
@@ -72,6 +74,10 @@ async def get_proceeding_details(
         raise
 
     latency_ms = int((time.perf_counter() - started) * 1000)
+    if ctx.config.provider == PROVIDER_DAMIA:
+        from datetime import date
+
+        await ctx.audit.increment_byok_daily_count(date.today().isoformat())
     await ctx.audit.log(
         tool_name="get_proceeding_details",
         query_hash=query_hash,

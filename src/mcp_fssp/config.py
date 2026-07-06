@@ -17,15 +17,20 @@ from pathlib import Path
 from .constants import (
     ALL_PROVIDERS,
     DEFAULT_AUDIT_DB_FILENAME,
+    DEFAULT_BYOK_DAILY_LIMIT,
     DEFAULT_HTTP_TIMEOUT_SECONDS,
+    DEFAULT_PROVIDER,
     DEFAULT_RPS,
     DEFAULT_USER_AGENT,
     ENV_API_CLOUD_KEY,
     ENV_AUDIT_DB,
+    ENV_BYOK_DAILY_LIMIT,
     ENV_CHECKO_KEY,
     ENV_DAMIA_KEY,
     ENV_HOSTED_API_BASE,
+    ENV_HOSTED_API_BASE_LEGACY,
     ENV_HOSTED_API_KEY,
+    ENV_HOSTED_API_KEY_LEGACY,
     ENV_HTTP_TIMEOUT,
     ENV_LOG_LEVEL,
     ENV_NEWDB_KEY,
@@ -56,10 +61,11 @@ class Config:
     user_agent: str
     audit_db_path: Path
     log_level: str
+    byok_daily_limit: int
 
     @property
     def hosted_mode_enabled(self) -> bool:
-        """Если пользователь задал `ATOMNO_API_KEY` И провайдер `atomno_pro`."""
+        """Если пользователь задал Atomno API-ключ и провайдер `atomno_pro`."""
         return (
             self.provider == PROVIDER_ATOMNO_PRO
             and self.hosted_api_key is not None
@@ -89,7 +95,7 @@ class Config:
 
     @classmethod
     def from_env(cls) -> Config:
-        provider = (os.environ.get(ENV_PROVIDER) or PROVIDER_DAMIA).strip().lower()
+        provider = (os.environ.get(ENV_PROVIDER) or DEFAULT_PROVIDER).strip().lower()
         if provider not in ALL_PROVIDERS:
             raise ValidationError(
                 f"Неизвестный провайдер '{provider}' в {ENV_PROVIDER}.",
@@ -105,7 +111,15 @@ class Config:
         rps = _parse_int_env(ENV_RPS, DEFAULT_RPS)
         user_agent = os.environ.get(ENV_USER_AGENT) or DEFAULT_USER_AGENT
         log_level = (os.environ.get(ENV_LOG_LEVEL) or "INFO").upper()
-        hosted_base = os.environ.get(ENV_HOSTED_API_BASE) or HOSTED_API_BASE_DEFAULT
+        hosted_base = (
+            os.environ.get(ENV_HOSTED_API_BASE)
+            or os.environ.get(ENV_HOSTED_API_BASE_LEGACY)
+            or HOSTED_API_BASE_DEFAULT
+        )
+        hosted_key = _clean_optional(os.environ.get(ENV_HOSTED_API_KEY)) or _clean_optional(
+            os.environ.get(ENV_HOSTED_API_KEY_LEGACY)
+        )
+        byok_limit = _parse_int_env(ENV_BYOK_DAILY_LIMIT, DEFAULT_BYOK_DAILY_LIMIT)
 
         return cls(
             provider=provider,
@@ -113,13 +127,14 @@ class Config:
             checko_key=_clean_optional(os.environ.get(ENV_CHECKO_KEY)),
             newdb_key=_clean_optional(os.environ.get(ENV_NEWDB_KEY)),
             api_cloud_key=_clean_optional(os.environ.get(ENV_API_CLOUD_KEY)),
-            hosted_api_key=_clean_optional(os.environ.get(ENV_HOSTED_API_KEY)),
+            hosted_api_key=hosted_key,
             hosted_api_base=hosted_base,
             http_timeout_seconds=timeout,
             rps=rps,
             user_agent=user_agent,
             audit_db_path=audit_db,
             log_level=log_level,
+            byok_daily_limit=byok_limit,
         )
 
 

@@ -9,7 +9,8 @@ from __future__ import annotations
 import time
 from typing import TYPE_CHECKING
 
-from ..constants import ERROR_CODE_INTERNAL
+from ..byok_limit import enforce_byok_daily_limit
+from ..constants import ERROR_CODE_INTERNAL, PROVIDER_DAMIA
 from ..errors import McpFsspError, ValidationError
 from ..normalize import (
     assert_valid_inn,
@@ -47,6 +48,7 @@ async def check_legal_entity_debts(
 
     started = time.perf_counter()
     try:
+        await enforce_byok_daily_limit(ctx.audit, ctx.config)
         response = await ctx.provider.check_legal_entity(
             inn=inn if inn else None,
             ogrn=ogrn if ogrn else None,
@@ -77,6 +79,10 @@ async def check_legal_entity_debts(
         raise
 
     latency_ms = int((time.perf_counter() - started) * 1000)
+    if ctx.config.provider == PROVIDER_DAMIA:
+        from datetime import date
+
+        await ctx.audit.increment_byok_daily_count(date.today().isoformat())
     await ctx.audit.log(
         tool_name="check_legal_entity_debts",
         query_hash=query_hash,
