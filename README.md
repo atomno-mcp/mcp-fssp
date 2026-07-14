@@ -1,3 +1,4 @@
+<!-- mcp-name: io.github.atomno-mcp/mcp-fssp -->
 # mcp-fssp
 
 [![PyPI](https://img.shields.io/pypi/v/atomno-mcp-fssp.svg)](https://pypi.org/project/atomno-mcp-fssp/)
