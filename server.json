@@ -1,18 +1,18 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.atomno-mcp/mcp-fssp",
+  "name": "mcp-fssp",
   "description": "MCP server for Russian FSSP enforcement proceedings lookup and debtor search.",
   "repository": {
     "url": "https://github.com/atomno-mcp/mcp-fssp",
     "source": "github"
   },
-  "version": "0.1.3",
+  "version": "0.1.5",
   "packages": [
     {
       "registryType": "pypi",
       "registryBaseUrl": "https://pypi.org",
       "identifier": "atomno-mcp-fssp",
-      "version": "0.1.3",
+      "version": "0.1.5",
       "runtimeHint": "uvx",
       "transport": {
         "type": "stdio"
