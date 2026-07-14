@@ -1,4 +1,8 @@
 {
   "$schema": "https://glama.ai/mcp/schemas/server.json",
-  "maintainers": ["atomnos"]
+  "maintainers": [
+    "atomnos"
+  ],
+  "name": "mcp-fssp",
+  "description": "MCP server for Russian FSSP enforcement proceedings lookup and debtor search."
 }
