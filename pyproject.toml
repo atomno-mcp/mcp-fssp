@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "atomno-mcp-fssp"
-version = "0.1.2"
+version = "0.1.3"
 description = "MCP server for Russian FSSP (bailiff service) debt lookups: enforcement proceedings (ИП) for individuals and legal entities via multi-provider fallback."
 readme = "README.md"
 requires-python = ">=3.11"
